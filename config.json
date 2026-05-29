@@ -1,0 +1,44 @@
+{
+  "_comment_1": "Configuration for build_cfo_workbook.py — edit to update behavior without code changes.",
+  "_comment_2": "Add new episodes to episode_classifications when new procedures are introduced.",
+  "_comment_3": "Adjust addressable_pct values if BPCI/CJR/state Medicaid program results inform a refinement.",
+
+  "episode_classifications": {
+    "CABG (including Cardiac catheterization)": "Standard",
+    "Coronary Artery Bypass Graft (CABG)": "Standard",
+    "Open heart valve surgery (including Cardiac catheterization)": "Standard",
+    "Percutaneous cardiac intervention (including Cardiac catheterization)": "Standard",
+    "Thyroidectomy": "Standard",
+    "Esophagogastroduodenoscopy (Upper Endoscopy)": "Heterogeneous",
+    "Cholecystectomy": "Heterogeneous",
+    "Bariatric Surgery": "Heterogeneous",
+    "Mastectomy": "Heterogeneous",
+    "Colectomy": "Heterogeneous",
+    "Repair Ventral Hernia": "Heterogeneous",
+    "Leg Amputation": "Heterogeneous"
+  },
+
+  "_addressable_note": "Addressable percentages reflect Frank's face-validity framework: Standard episodes (tight procedure list, diagnosis not the driver) have outliers that are real performance gaps. Heterogeneous episodes (bundled procedures/diagnoses) carry definitional variance that engagement cannot resolve. Defaults below are conservative and calibrated against BPCI Advanced / CJR / Maryland TCOC first-cycle outcomes.",
+  "addressable_pct_by_classification": {
+    "Standard": 0.70,
+    "Heterogeneous": 0.50
+  },
+
+  "default_classification_for_unknown": "Heterogeneous",
+
+  "rae_descriptors": {
+    "1": "Northeast / Western Slope",
+    "2": "Boulder / Larimer",
+    "3": "Pueblo / Colorado Springs",
+    "4": "Denver Metro / Adams / Arapahoe"
+  },
+
+  "_filter_note": "Volume filter at 5 suppresses small-n statistical noise; facilities with vol < 5 produce unstable O:E ratios. O:E threshold 1.10 = 10% above risk-adjusted expected cost.",
+  "min_volume_filter": 5,
+  "oe_outlier_threshold": 1.10,
+
+  "_systemic_note": "Facilities outlier in 3+ distinct episodes are flagged as systemic — operational patterns transcending any single procedure.",
+  "systemic_min_episodes": 3,
+
+  "top_n_concentration": 30
+}
