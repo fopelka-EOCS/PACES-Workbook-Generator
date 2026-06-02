@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Episode-of-Care Team Investment Decision Tool — APCD-Grounded Model | Medicaid CFO</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #1a3a5c;
+    --navy-dk: #0f2540;
+    --blue:    #1565c0;
+    --blue-lt: #1976d2;
+    --rule:    #c8d8ea;
+    --text:    #1e2a35;
+    --muted:   #4a5a6a;
+    --bg:      #ffffff;
+    --bg-alt:  #f3f7fb;
+    --gold:    #e8a000;
+    --gold-dk: #c08600;
+    --savings: #155724;
+    --std-bg:  #e3f0fb;
+    --std-bdr: #1565c0;
+    --std-txt: #0d3c6e;
+    --het-bg:  #f0ebd8;
+    --het-bdr: #b08d57;
+    --het-txt: #6a4a1a;
+    --sys-bg:  #fce8e6;
+    --sys-bdr: #c62828;
+    --sys-txt: #7f0000;
+    --lever-a: #1565c0;
+    --lever-c: #2e7d32;
+  }
+
+  body {
+    font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 9.5in;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    background: var(--navy-dk);
+    color: #fff;
+    padding: 26px 44px 20px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .doc-header .eyebrow {
+    font-size: 7.5pt;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #a8c4de;
+    margin-bottom: 6px;
+  }
+  .doc-header h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 21pt;
+    font-weight: 600;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .doc-header .subtitle {
+    font-size: 10.5pt;
+    font-style: italic;
+    color: #a8c4de;
+    margin-bottom: 14px;
+  }
+  .doc-header .meta-row {
+    display: flex;
+    gap: 24px;
+    font-size: 7.5pt;
+    color: #8aaec8;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 10px;
+    flex-wrap: wrap;
+  }
+  .doc-header .meta-row span b { color: #c8dcea; }
+
+  .body { padding: 28px 44px 36px; }
+
+  .section-label {
+    font-size: 7pt;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--blue-lt);
+    margin-top: 24px;
+    margin-bottom: 3px;
+  }
+  h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14pt;
+    font-weight: 600;
+    color: var(--navy);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 5px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 14px 0 6px;
+  }
+  p { margin-bottom: 8px; }
+
+  /* ── DECISION FRAME ── */
+  .frame-box {
+    background: linear-gradient(180deg, var(--bg-alt), #fff);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--navy);
+    border-radius: 0 0 5px 5px;
+    padding: 16px 20px;
+    margin: 14px 0 18px;
+  }
+  .frame-box .frame-q {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 11.5pt;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .frame-box .frame-a {
+    font-size: 9pt;
+    color: var(--muted);
+  }
+  .frame-box .frame-a b { color: var(--navy); }
+
+  /* ── HEADLINE STATS ── */
+  .headline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .hl-card {
+    background: var(--navy-dk);
+    color: #fff;
+    border-radius: 5px;
+    padding: 13px 16px;
+    text-align: left;
+  }
+  .hl-card.gold {
+    background: linear-gradient(135deg, var(--gold-dk), var(--gold));
+    color: #2a1c00;
+  }
+  .hl-card .hl-label {
+    font-size: 7pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #a8c4de;
+    margin-bottom: 4px;
+  }
+  .hl-card.gold .hl-label { color: #5a3e00; }
+  .hl-card .hl-val {
+    font-size: 17pt;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 2px;
+  }
+  .hl-card .hl-sub {
+    font-size: 7.5pt;
+    color: #8aaec8;
+  }
+  .hl-card.gold .hl-sub { color: #5a3e00; }
+
+  /* ── THREE VARIABLES ── */
+  .vars-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0 16px;
+  }
+  .var-card {
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--var-color, var(--navy));
+    padding: 12px 16px;
+    background: #fbfcfe;
+    border-radius: 0 0 4px 4px;
+  }
+  .var-card.v1 { --var-color: var(--std-bdr); }
+  .var-card.v2 { --var-color: var(--het-bdr); }
+  .var-card.v3 { --var-color: var(--sys-bdr); }
+  .var-card .var-label {
+    font-size: 7pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--var-color);
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .var-card .var-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .var-card p {
+    font-size: 8.5pt;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* ── LEVER TAXONOMY ── */
+  .lever-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0 16px;
+  }
+  .lever-card {
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--lever-color, var(--navy));
+    padding: 12px 16px;
+    background: #fbfcfe;
+    border-radius: 0 0 4px 4px;
+  }
+  .lever-card.a { --lever-color: var(--lever-a); }
+  .lever-card.c { --lever-color: var(--lever-c); }
+  .lever-card .lever-label {
+    font-size: 7pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--lever-color);
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .lever-card .lever-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .lever-card p {
+    font-size: 8.5pt;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .out-of-scope {
+    background: var(--sys-bg);
+    border-left: 4px solid var(--sys-bdr);
+    padding: 10px 14px;
+    font-size: 8.5pt;
+    color: var(--sys-txt);
+    border-radius: 0 3px 3px 0;
+    margin: 12px 0;
+  }
+  .out-of-scope b { color: var(--sys-txt); }
+
+  /* ── CONTROLS PANEL ── */
+  .controls {
+    background: var(--navy-dk);
+    color: #fff;
+    border-radius: 6px;
+    padding: 18px 22px 16px;
+    margin: 18px 0;
+    border: 1px solid var(--navy);
+  }
+  .controls h3 {
+    color: var(--gold);
+    margin: 0 0 12px;
+    font-size: 9pt;
+  }
+  .control-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 12px;
+  }
+  .lever-block {
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--lever-c-color, var(--gold));
+  }
+  .lever-block.a { --lever-c-color: var(--blue-lt); }
+  .lever-block.c { --lever-c-color: #4caf50; }
+  .lever-block.focus { --lever-c-color: var(--gold); }
+  .lever-block .block-label {
+    font-size: 7.5pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .lever-block.a .block-label { color: #7aaccc; }
+  .lever-block.c .block-label { color: #a5d6a7; }
+  .lever-block.focus .block-label { color: var(--gold); }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 8.5pt;
+  }
+  .input-row label {
+    flex: 1;
+    color: #c8dcea;
+  }
+  .input-row input[type="number"], .input-row select {
+    width: 78px;
+    padding: 4px 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    border-radius: 3px;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 9pt;
+    font-weight: 700;
+    text-align: right;
+  }
+  .input-row input[type="number"]:focus, .input-row select:focus {
+    outline: 1px solid var(--gold);
+    background: rgba(255,255,255,0.15);
+  }
+  .input-row .unit {
+    color: #8aaec8;
+    font-size: 8pt;
+    width: 14px;
+  }
+  .preset-row {
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 4px;
+  }
+  .preset-btn {
+    flex: 1;
+    padding: 7px 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #c8dcea;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .preset-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: var(--gold); }
+  .preset-btn.active {
+    background: var(--gold);
+    color: #2a1c00;
+    border-color: var(--gold);
+  }
+
+  /* ── LIVE TOTAL DISPLAY ── */
+  .totals-panel {
+    background: linear-gradient(135deg, var(--gold-dk), var(--gold));
+    color: #2a1c00;
+    border-radius: 6px;
+    padding: 20px 26px;
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .total-main {
+    border-right: 1px solid rgba(0,0,0,0.18);
+    padding-right: 24px;
+  }
+  .total-main .tm-label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #5a3e00;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .total-main .tm-val {
+    font-size: 32pt;
+    font-weight: 700;
+    color: #1a0e00;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .total-main .tm-sub {
+    font-size: 8pt;
+    color: #5a3e00;
+  }
+  .total-split .ts-label {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #5a3e00;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .total-split .ts-val {
+    font-size: 17pt;
+    font-weight: 700;
+    color: #2a1c00;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .total-split .ts-sub {
+    font-size: 7.5pt;
+    color: #5a3e00;
+  }
+  .progress-row {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(0,0,0,0.18);
+  }
+  .progress-row .pr-label {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #5a3e00;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-track {
+    height: 12px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2a1c00, #5a3e00);
+    border-radius: 6px;
+    transition: width 0.25s ease;
+  }
+  .progress-marker {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 18px;
+    background: rgba(0,0,0,0.6);
+  }
+  .progress-marker .pm-label {
+    position: absolute;
+    top: 20px;
+    transform: translateX(-50%);
+    font-size: 7pt;
+    color: #5a3e00;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  /* ── EPISODE TABLE ── */
+  .ep-table-wrap { overflow-x: auto; margin: 14px 0 4px; }
+  table.ep {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+  }
+  table.ep th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    font-size: 7pt;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 7px 6px;
+    text-align: left;
+    border: 1px solid #2a4a6c;
+    vertical-align: middle;
+  }
+  table.ep th.center, table.ep td.center { text-align: center; }
+  table.ep th.right, table.ep td.right { text-align: right; }
+  table.ep td {
+    padding: 5px 6px;
+    border: 1px solid #d4e2ef;
+    vertical-align: middle;
+  }
+  table.ep tbody tr:nth-child(even) td { background: #f7fafd; }
+  table.ep .episode-name {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 8pt;
+  }
+  table.ep .lever-a-col { background: rgba(21,101,192,0.06) !important; color: var(--lever-a); font-weight: 600; }
+  table.ep .lever-c-col { background: rgba(46,125,50,0.06) !important; color: var(--lever-c); font-weight: 600; }
+  table.ep .ep-total-col { background: var(--bg-alt) !important; color: var(--navy); font-weight: 700; }
+  table.ep select, table.ep input[type="number"], table.ep input[type="checkbox"] {
+    font-family: inherit;
+    font-size: 8pt;
+    padding: 2px 4px;
+    border: 1px solid #c8d8ea;
+    border-radius: 2px;
+    background: #fff;
+  }
+  table.ep select { width: 100%; }
+  table.ep input[type="number"] { width: 56px; text-align: right; font-weight: 600; }
+  table.ep tfoot tr.totals td {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 700;
+    font-size: 9pt;
+    border: 1px solid #0a2238;
+    padding: 8px 6px;
+  }
+  table.ep tfoot tr.totals td.lever-a-col { background: #1c4380; color: #fff; }
+  table.ep tfoot tr.totals td.lever-c-col { background: #1d4d28; color: #fff; }
+  table.ep tfoot tr.totals td.ep-total-col { background: #2a1c00; color: var(--gold); font-size: 10pt; }
+  .class-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .class-badge.std { background: var(--std-bg); color: var(--std-txt); border: 1px solid var(--std-bdr); }
+  .class-badge.het { background: var(--het-bg); color: var(--het-txt); border: 1px solid var(--het-bdr); }
+
+  /* ── SYSTEMIC FACILITY TABLE ── */
+  .systable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 10px 0;
+  }
+  .systable th {
+    background: var(--sys-bdr);
+    color: #fff;
+    font-size: 7pt;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 7px 8px;
+    text-align: left;
+    border: 1px solid #7f0000;
+  }
+  .systable th.right, .systable td.right { text-align: right; }
+  .systable th.center, .systable td.center { text-align: center; }
+  .systable td {
+    padding: 5px 8px;
+    border: 1px solid #f0d8d6;
+    vertical-align: middle;
+  }
+  .systable tr:nth-child(even) td { background: #fef7f6; }
+  .systable td.persist-high { background: var(--sys-bg) !important; color: var(--sys-txt); font-weight: 700; }
+  .systable td.persist-med  { background: #fdf2d6 !important; color: #6a4a1a; font-weight: 700; }
+  .systable .ep-tag {
+    display: inline-block;
+    background: #f0e8e7;
+    color: var(--sys-txt);
+    border: 1px solid #e0c8c5;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 7pt;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+
+  /* ── CONCENTRATION TABLE ── */
+  .conc-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  table.conc {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+  }
+  table.conc th {
+    background: var(--navy);
+    color: #fff;
+    font-size: 7pt;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 6px 8px;
+    text-align: left;
+    border: 1px solid #2a4a6c;
+  }
+  table.conc th.right, table.conc td.right { text-align: right; }
+  table.conc td {
+    padding: 4px 8px;
+    border: 1px solid #d4e2ef;
+  }
+  table.conc tbody tr:nth-child(even) td { background: #f7fafd; }
+  table.conc tr.in-scope td { background: #e8f5e9 !important; }
+  table.conc tr.in-scope td:first-child { border-left: 3px solid var(--savings); font-weight: 700; }
+
+  .conc-summary {
+    background: var(--bg-alt);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 14px 16px;
+  }
+  .conc-summary h4 {
+    font-size: 8pt;
+    color: var(--navy);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+  }
+  .conc-summary .conc-stat {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .conc-summary .conc-stat:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .conc-summary .conc-label {
+    font-size: 7pt;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .conc-summary .conc-val {
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .conc-summary .conc-sub {
+    font-size: 7.5pt;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── GOAL PANEL ── */
+  .goal-panel {
+    background: var(--navy-dk);
+    color: #fff;
+    border-radius: 6px;
+    padding: 22px 26px;
+    margin: 18px 0;
+    border-top: 4px solid var(--gold);
+  }
+  .goal-panel .goal-eyebrow {
+    font-size: 8pt;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .goal-panel h3 {
+    color: #fff;
+    font-size: 11pt;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 12px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+  }
+  .goal-panel .goal-statement {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 13pt;
+    color: #fff;
+    line-height: 1.45;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 14px;
+  }
+  .goal-panel .goal-statement b { color: var(--gold); font-weight: 700; }
+  .goal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .goal-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 12px 14px;
+    border-left: 2px solid #a8c4de;
+  }
+  .goal-card .gc-label {
+    font-size: 7pt;
+    color: #a8c4de;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .goal-card .gc-val {
+    font-size: 14pt;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 3px;
+  }
+  .goal-card .gc-sub {
+    font-size: 7.5pt;
+    color: #8aaec8;
+  }
+
+  /* ── DEFENSIBILITY ── */
+  .defense-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 12px 0;
+  }
+  .defense-card {
+    background: #fbfcfe;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--blue-lt);
+    padding: 12px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+  .defense-card h4 {
+    font-size: 8.5pt;
+    color: var(--navy);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .defense-card p {
+    font-size: 8.5pt;
+    line-height: 1.5;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .team-mapping {
+    background: #fef8e1;
+    border-left: 4px solid var(--gold);
+    padding: 12px 16px;
+    margin: 14px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 8.5pt;
+    line-height: 1.55;
+  }
+  .team-mapping h4 {
+    font-size: 8.5pt;
+    color: #5a3e00;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .team-mapping p { margin-bottom: 6px; }
+  .team-mapping b { color: var(--navy); }
+
+  .doc-footer {
+    border-top: 2px solid var(--rule);
+    padding: 12px 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 7.5pt;
+    color: #8a9aaa;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { font-size: 9.5pt; max-width: 8.5in; }
+    .controls, table.ep select, table.ep input { display: none !important; }
+    .controls-print {
+      display: block !important;
+      background: #f3f7fb;
+      border: 1px solid #c8d8ea;
+      padding: 14px;
+      margin: 14px 0;
+      font-size: 9pt;
+    }
+    .controls-print b { color: var(--navy); }
+    .page-break { page-break-before: always; }
+  }
+  .controls-print { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ───── HEADER ───── -->
+<div class="doc-header">
+  <div class="eyebrow">From Populations to Episodes &nbsp;·&nbsp; Medicaid CFO Decision Tool &nbsp;·&nbsp; <b>APCD-Grounded Model</b></div>
+  <h1>Episode-of-Care Team Investment Decision Tool</h1>
+  <div class="subtitle">Three-variable savings model built from Colorado APCD measured outlier excess</div>
+  <div class="meta-row">
+    <span><b>Universe:</b> @@N_EPISODES@@ procedural episodes · $@@TOTAL_ACTUAL_M@@M annual actual spend (vol ≥ @@MIN_VOLUME@@)</span>
+    <span><b>Measured outlier excess:</b> $@@TOTAL_OUTLIER_EXCESS_M@@M / year</span>
+    <span><b>Levers modeled:</b> Referral Steering (A) · QI Engagement (C)</span>
+    <span><b>Source:</b> Colorado APCD · @@GENERATED_DATE@@</span>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- ───── DECISION FRAME ───── -->
+<div class="frame-box">
+  <div class="frame-q">"What share of the $@@TOTAL_OUTLIER_EXCESS_M@@ M in measured outlier excess can the State realistically recover — and what targets, intensity, and lever mix does that require?"</div>
+  <div class="frame-a">This model is grounded in <b>measured</b> facility-episode outlier excess from Colorado's risk-adjusted APCD cost output (vol ≥ @@MIN_VOLUME@@ filter applied to suppress small-n noise). Three variables drive the number: (1) <b>episode clinical character</b> — Standard vs Heterogeneous, governing how much of the outlier excess is genuinely addressable; (2) <b>facility outlier persistence</b> — whether a facility is an outlier across many episodes, suggesting systemic waste vs episode-specific gap; and (3) <b>where the team actually engages</b> — the top-N facility-episode combinations that contain the majority of opportunity. Every input is editable. Outputs recompute live.</div>
+</div>
+
+<!-- ───── HEADLINE STATS ───── -->
+<div class="headline-grid">
+  <div class="hl-card">
+    <div class="hl-label">Annual Actual Spend</div>
+    <div class="hl-val">$@@TOTAL_ACTUAL_M@@M</div>
+    <div class="hl-sub">@@N_EPISODES@@ episodes · @@ANALYTICAL_ROWS@@ facility-eps · vol ≥ @@MIN_VOLUME@@</div>
+  </div>
+  <div class="hl-card">
+    <div class="hl-label">Measured Outlier Excess</div>
+    <div class="hl-val">$@@TOTAL_OUTLIER_EXCESS_M@@M</div>
+    <div class="hl-sub">@@OUTLIER_PCT_OF_SPEND@@% of spend · @@N_OUTLIERS@@ facility-episodes at O:E > @@OE_THRESHOLD@@</div>
+  </div>
+  <div class="hl-card">
+    <div class="hl-label">Addressable After Classification</div>
+    <div class="hl-val">$@@TOTAL_ADDRESSABLE_M@@M</div>
+    <div class="hl-sub">Standard @@STD_ADDR_PCT@@% · Heterogeneous @@HET_ADDR_PCT@@% of excess</div>
+  </div>
+  <div class="hl-card gold">
+    <div class="hl-label">Top-20 Facility-Episodes Capture</div>
+    <div class="hl-val">@@TOP_20_PCT_INT@@%</div>
+    <div class="hl-sub">$@@TOP_20_M@@M of opportunity sits in 20 engagements</div>
+  </div>
+</div>
+
+<!-- ── DATA SOURCE NOTE ── -->
+<div style="background:var(--bg-alt); border-left:4px solid var(--blue); padding:10px 14px; margin:10px 0 16px; font-size:8.5pt; color:var(--muted); border-radius:0 3px 3px 0;">
+  <b style="color:var(--navy);">Data source.</b> Colorado APCD facility-episode risk-adjusted cost output, @@GENERATED_DATE@@ release. Volume filter ≥ @@MIN_VOLUME@@ episodes per facility-episode pair applied throughout to suppress small-n statistical noise; raw file contains @@TOTAL_RAW_ROWS@@ facility-episodes, analytical set is @@ANALYTICAL_ROWS@@. All figures shown are from the analytical set.
+</div>
+
+<!-- ───── THREE VARIABLES ───── -->
+<div class="section-label">Section 1 · Three Variables That Drive the Number</div>
+<h2>What Frank's Face-Validity Lens Adds to the Math</h2>
+
+<div class="vars-grid">
+  <div class="var-card v1">
+    <div class="var-label">Variable 1 · Episode Character</div>
+    <div class="var-title">Standard vs Heterogeneous</div>
+    <p><b>Standard</b> episodes (CABG, Valve, PCI, Thyroidectomy) have tight procedure lists and diagnoses that aren't the driver. When a facility runs at O:E &gt; 1.10, it's real — acuity not captured by risk-adjustment or genuine complication-driven excess. <b>~70% addressable.</b><br><br><b>Heterogeneous</b> episodes (EGD, Mastectomy, Colectomy, Bariatric, Cholecystectomy, Ventral Hernia, Leg Amp) bundle different procedures or diagnoses. Some "outlier" status reflects case-mix or definitional variance, not facility performance. <b>~50% addressable.</b></p>
+  </div>
+  <div class="var-card v2">
+    <div class="var-label">Variable 2 · Facility Persistence</div>
+    <div class="var-title">Episode-Specific vs Systemic Outlier</div>
+    <p>If a facility is an outlier in one episode, the gap is likely episode-specific — engage on that episode's drivers. If a facility is an outlier across <b>multiple episodes</b>, the pattern points to systemic waste, complication management, or care-coordination gaps. <b>These facilities are the highest-leverage targets for both referral steering and QI engagement</b> — the model surfaces them in Section 4.</p>
+  </div>
+  <div class="var-card v3">
+    <div class="var-label">Variable 3 · Concentration</div>
+    <div class="var-title">Where the Team Actually Engages</div>
+    <p>The top 20 facility-episode combinations contain @@TOP_20_PCT_INT@@% of all outlier excess. The top 30 contain @@TOP_30_PCT_INT@@%. The top 50 contain @@TOP_50_PCT_INT@@%. The team does not need to touch @@N_OUTLIERS@@ facility-episodes — it needs to engage the right 20–30. The model lets the CFO see what changes when the team concentrates vs spreads.</p>
+  </div>
+</div>
+
+<!-- ───── LEVER TAXONOMY ───── -->
+<div class="section-label">Section 2 · The Levers</div>
+<h2>Two Primary Levers, Honestly Bounded</h2>
+
+<div class="lever-grid">
+  <div class="lever-card a">
+    <div class="lever-label">Lever A — Primary</div>
+    <div class="lever-title">Informed Referral Steering (RAE + PCP)</div>
+    <p>RAEs and primary care providers, using published facility-level episode performance, steer referrals away from high-O:E facilities toward lower-O:E facilities for elective procedural episodes. Mechanically a case-mix shift; no facility takes a rate cut. Most powerful on elective episodes with concentrated outliers. Does not apply to OB, emergent, or non-elective episodes.</p>
+  </div>
+  <div class="lever-card c">
+    <div class="lever-label">Lever C — Primary</div>
+    <div class="lever-title">Outlier-Targeted QI Engagement</div>
+    <p>Voluntary engagement with facilities at O:E &gt; 1.10 on the specific drivers of their excess — complications, readmissions, ED visits within the episode window, redundant post-procedural services. The Episode team supplies analytics, peer benchmarks, and improvement frameworks; the facility owns the change. Collaborative QI — no withholds, no penalties, no shared-savings contracts.</p>
+  </div>
+</div>
+
+<div class="out-of-scope">
+  <b>Explicitly out of scope.</b> This model assumes no fee-schedule rate cuts, no payment withholds, no mandatory upside/downside risk, no shared-savings settlement, and no "performance recovery" cycle. Those mechanisms are not available to the CFO and are not relied on here. Public Transparency and Appropriateness / Site-of-Service shift are real but small in this population — named, not modeled.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CALCULATOR
+════════════════════════════════════════════════════════════ -->
+<div class="section-label">Section 3 · The Calculator — All Inputs Editable</div>
+<h2>Per-Episode Configuration on Measured Outlier Excess</h2>
+
+<div class="controls">
+  <h3>STATE-WIDE LEVER PARAMETERS &amp; ENGAGEMENT FOCUS</h3>
+  <div class="control-row">
+    <div class="lever-block a">
+      <div class="block-label">Lever A — Referral Steering</div>
+      <div class="input-row">
+        <label for="migA">Migration rate (% of outlier-facility volume moved, elective episodes only)</label>
+        <input type="number" id="migA" min="0" max="50" step="0.5" value="10">
+        <span class="unit">%</span>
+      </div>
+      <div class="input-row">
+        <label for="dlA">Cost delta (avg savings per migrated episode)</label>
+        <input type="number" id="dlA" min="0" max="40" step="0.5" value="10">
+        <span class="unit">%</span>
+      </div>
+    </div>
+    <div class="lever-block c">
+      <div class="block-label">Lever C — QI Engagement</div>
+      <div class="input-row">
+        <label for="engC">Engagement rate (% of outlier facilities participating)</label>
+        <input type="number" id="engC" min="0" max="100" step="1" value="50">
+        <span class="unit">%</span>
+      </div>
+      <div class="input-row">
+        <label for="redC">Reduction rate (% of their addressable excess recovered)</label>
+        <input type="number" id="redC" min="0" max="50" step="1" value="20">
+        <span class="unit">%</span>
+      </div>
+    </div>
+    <div class="lever-block focus">
+      <div class="block-label">Engagement Focus</div>
+      <div class="input-row">
+        <label for="topN">Top-N facility-episodes engaged</label>
+        <select id="topN">
+          <option value="@@N_OUTLIERS@@">All @@N_OUTLIERS@@</option>
+          <option value="50">Top 50</option>
+          <option value="30">Top 30</option>
+          <option value="20" selected>Top 20</option>
+          <option value="15">Top 15</option>
+          <option value="10">Top 10</option>
+        </select>
+      </div>
+      <div class="input-row">
+        <label for="goalTarget">CFO goal — annual savings target</label>
+        <input type="number" id="goalTarget" min="0" step="250000" value="2000000">
+        <span class="unit">$</span>
+      </div>
+    </div>
+  </div>
+  <div class="preset-row">
+    <button class="preset-btn" data-preset="floor">Floor (5% × 10% / 30% × 15%)</button>
+    <button class="preset-btn active" data-preset="balanced">Balanced (10% × 10% / 50% × 20%)</button>
+    <button class="preset-btn" data-preset="stretch">Stretch (15% × 10% / 65% × 25%)</button>
+    <button class="preset-btn" id="reset">Reset to Defaults</button>
+  </div>
+</div>
+
+<div class="controls-print" id="controlsPrint"></div>
+
+<!-- live totals + progress -->
+<div class="totals-panel">
+  <div class="total-main">
+    <div class="tm-label">Total Projected Annual Savings</div>
+    <div class="tm-val" id="totalVal">$0</div>
+    <div class="tm-sub" id="totalSub">Year 2 onward · top-N engagement applied</div>
+  </div>
+  <div class="total-split">
+    <div class="ts-label">From Lever A — Referral Steering</div>
+    <div class="ts-val" id="aVal">$0</div>
+    <div class="ts-sub" id="aSub">Volume migrated × cost delta</div>
+  </div>
+  <div class="total-split">
+    <div class="ts-label">From Lever C — QI Engagement</div>
+    <div class="ts-val" id="cVal">$0</div>
+    <div class="ts-sub" id="cSub">Addressable × engagement × reduction</div>
+  </div>
+  <div class="progress-row">
+    <div class="pr-label">
+      <span>Progress vs $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling &nbsp;·&nbsp; $@@TOTAL_ADDRESSABLE_M_PRECISE@@M addressable ceiling &nbsp;·&nbsp; CFO target</span>
+      <span id="progressText"></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      <div class="progress-marker" id="addrMarker" style="left:@@ADDR_PCT_OF_OUTLIER@@%"><span class="pm-label">$@@TOTAL_ADDRESSABLE_M_PRECISE@@M addressable</span></div>
+      <div class="progress-marker" id="goalMarker"><span class="pm-label" id="goalLabel">CFO target</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- per-episode table -->
+<div class="ep-table-wrap">
+  <table class="ep">
+    <thead>
+      <tr>
+        <th style="width:21%;">Episode</th>
+        <th class="center" style="width:7%;">Class</th>
+        <th class="center" style="width:6%;">Addr %</th>
+        <th class="center" style="width:5%;">Elective</th>
+        <th class="right" style="width:10%;">Actual Spend</th>
+        <th class="right" style="width:6%;">Vol</th>
+        <th class="center" style="width:5%;">Outliers</th>
+        <th class="right" style="width:9%;">Outlier Excess</th>
+        <th class="right" style="width:9%;">Addressable</th>
+        <th class="right lever-a-col" style="width:7%;">Lever A</th>
+        <th class="right lever-c-col" style="width:7%;">Lever C</th>
+        <th class="right ep-total-col" style="width:8%;">Total</th>
+      </tr>
+    </thead>
+    <tbody id="epRows"></tbody>
+    <tfoot>
+      <tr class="totals" id="epTotals">
+        <td colspan="4"><b>TOTAL — 12 Episodes</b></td>
+        <td class="right" id="ttSpend"></td>
+        <td class="right" id="ttVol"></td>
+        <td class="center" id="ttOutliers"></td>
+        <td class="right" id="ttExcess"></td>
+        <td class="right" id="ttAddr"></td>
+        <td class="right lever-a-col" id="ttA"></td>
+        <td class="right lever-c-col" id="ttC"></td>
+        <td class="right ep-total-col" id="ttTotal"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<p style="font-size:8pt; color:var(--muted); margin-top:6px;">
+  <i>Class defaults:</i>
+  &nbsp;<span class="class-badge std">Standard — 70% addressable</span>
+  &nbsp;<span class="class-badge het">Heterogeneous — 50% addressable</span>
+  &nbsp;&nbsp;<i>Outlier excess is measured</i> (sum of facility-level excess at O:E &gt; 1.10 from APCD). Addressable % and elective flag can be overridden per episode.
+</p>
+
+<!-- ═══════════════════════════════════════════════════════
+     WHERE THE TEAM ENGAGES
+════════════════════════════════════════════════════════════ -->
+<div class="section-label">Section 4 · Where the Team Actually Engages</div>
+<h2>Systemic Outlier Facilities &amp; Top-N Concentration</h2>
+
+<h3>Systemic Outlier Facilities — Outlier in 3+ Episodes</h3>
+<p style="font-size:9pt; color:var(--muted); margin-bottom:8px;">These facilities are outliers across multiple episodes, regardless of episode character. Frank's observation: <i>"some institutions, regardless of episode definition issues, just tend to be an outlier — look for waste, complications, or a place to avoid."</i> The team prioritizes referral steering AND QI engagement at these facilities first.</p>
+
+<table class="systable">
+  <thead>
+    <tr>
+      <th style="width:32%;">Facility</th>
+      <th style="width:14%;">System</th>
+      <th class="center" style="width:8%;">Outlier Eps</th>
+      <th class="center" style="width:8%;">Total Eps</th>
+      <th class="right" style="width:10%;">Excess $</th>
+      <th style="width:28%;">Outlier in...</th>
+    </tr>
+  </thead>
+  <tbody id="systemicRows"></tbody>
+</table>
+
+<h3 style="margin-top:18px;">Top-N Facility-Episode Concentration</h3>
+<div class="conc-grid">
+  <table class="conc">
+    <thead>
+      <tr>
+        <th style="width:5%;">#</th>
+        <th style="width:33%;">Facility</th>
+        <th style="width:33%;">Episode</th>
+        <th class="right" style="width:9%;">O:E</th>
+        <th class="right" style="width:12%;">Excess $</th>
+        <th class="right" style="width:8%;">Cum %</th>
+      </tr>
+    </thead>
+    <tbody id="concRows"></tbody>
+  </table>
+  <div class="conc-summary">
+    <h4>Concentration Math</h4>
+    <div class="conc-stat">
+      <div class="conc-label">Total outlier facility-episodes</div>
+      <div class="conc-val">@@N_OUTLIERS@@</div>
+      <div class="conc-sub">Statewide vol ≥ @@MIN_VOLUME@@, O:E &gt; @@OE_THRESHOLD@@</div>
+    </div>
+    <div class="conc-stat">
+      <div class="conc-label">Top 10 capture</div>
+      <div class="conc-val">@@TOP_10_PCT@@%</div>
+      <div class="conc-sub">$@@TOP_10_M@@M of $@@TOTAL_OUTLIER_EXCESS_M@@M</div>
+    </div>
+    <div class="conc-stat">
+      <div class="conc-label">Top 20 capture</div>
+      <div class="conc-val" style="color:var(--gold-dk);">@@TOP_20_PCT@@%</div>
+      <div class="conc-sub">$@@TOP_20_M@@M — current model focus</div>
+    </div>
+    <div class="conc-stat">
+      <div class="conc-label">Top 30 capture</div>
+      <div class="conc-val">@@TOP_30_PCT@@%</div>
+      <div class="conc-sub">$@@TOP_30_M@@M of $@@TOTAL_OUTLIER_EXCESS_M@@M</div>
+    </div>
+    <div class="conc-stat">
+      <div class="conc-label">Top 50 capture</div>
+      <div class="conc-val">@@TOP_50_PCT@@%</div>
+      <div class="conc-sub">$@@TOP_50_M@@M of $@@TOTAL_OUTLIER_EXCESS_M@@M</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CFO GOAL PANEL
+════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 5 — WHERE THE EXCESS LIVES (Geographic / RAE / System)
+     Generated dynamically from APCD breakdown data
+════════════════════════════════════════════════════════════ -->
+@@SECTION_5_CONTENT@@
+
+<div class="section-label">Section 6 · The CFO's Defensible Goal</div>
+<h2>What the Model Says the Goal Should Be</h2>
+
+<div class="goal-panel">
+  <div class="goal-eyebrow">PUBLIC GOAL — DRAFT FOR THE CFO</div>
+  <h3 style="font-family:'Source Serif 4',Georgia,serif;">The savings statement the model supports at current settings:</h3>
+  <div class="goal-statement" id="goalStatement">
+    <!-- live -->
+  </div>
+  <div class="goal-grid">
+    <div class="goal-card">
+      <div class="gc-label">Of the $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling</div>
+      <div class="gc-val" id="gcCeiling">0%</div>
+      <div class="gc-sub" id="gcCeilingSub">Captured under current settings</div>
+    </div>
+    <div class="goal-card">
+      <div class="gc-label">Of the $@@TOTAL_ADDRESSABLE_M_PRECISE@@M addressable</div>
+      <div class="gc-val" id="gcAddr">0%</div>
+      <div class="gc-sub" id="gcAddrSub">After Standard/Heterogeneous classification</div>
+    </div>
+    <div class="goal-card">
+      <div class="gc-label">Year 2+3 cumulative</div>
+      <div class="gc-val" id="gcCum">$0</div>
+      <div class="gc-sub">Year 1 is base year — no payment-side savings</div>
+    </div>
+  </div>
+  <p style="font-size:8pt; color:#a8c4de; margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.12);">
+    <b style="color:var(--gold);">Model-grounded range:</b>
+    Floor + Top-20 ≈ $@@FLOOR_TOP20@@  ·  Balanced + Top-20 ≈ $@@BALANCED_TOP20@@  ·  Balanced + Top-30 ≈ $@@BALANCED_TOP30@@  ·  Stretch + Top-30 ≈ $@@STRETCH_TOP30@@  ·  Stretch + All-@@N_OUTLIERS@@ ≈ $@@STRETCH_ALL@@.
+    The model is conservative by design — Lever A and Lever C do not double-count, addressability is bounded by classification, and concentration assumes the team engages a focused target set rather than all @@N_OUTLIERS@@ facility-episodes. <b style="color:#fff;">A realistic Year-2 CFO target sits in the $@@YEAR2_TARGET_LOW@@–$@@YEAR2_TARGET_HIGH@@ range.</b> Higher targets are achievable by widening engagement scope or accepting more aggressive reduction assumptions than published episode programs support.
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     DEFENSIBILITY
+════════════════════════════════════════════════════════════ -->
+<div class="section-label">Section 7 · Defensibility &amp; Team Function</div>
+<h2>Why the Numbers Hold Up, What the Model Doesn't Know</h2>
+
+<div class="defense-grid">
+  <div class="defense-card">
+    <h4>Outlier excess is measured, not assumed</h4>
+    <p>The $@@TOTAL_OUTLIER_EXCESS_M@@M figure is the sum of (actual − expected) across the @@N_OUTLIERS@@ facility-episode combinations at O:E &gt; @@OE_THRESHOLD@@ in the Colorado APCD risk-adjusted cost output, with a vol ≥ @@MIN_VOLUME@@ filter applied to suppress small-n noise. It is not a calibration to published programs — it is Colorado's own number. Adjustments to lever intensity move what share of $@@TOTAL_OUTLIER_EXCESS_M@@M is recovered, not the ceiling itself.</p>
+  </div>
+  <div class="defense-card">
+    <h4>Classification governs addressability</h4>
+    <p>Frank's face-validity framework: Standard episodes (tight procedure list, diagnosis not the driver) have outliers that are real performance gaps — 70% addressable. Heterogeneous episodes (mixed procedures or diagnoses lumped into one episode definition) have outliers partly explained by definitional variance — 50% addressable. Both defaults are overrideable per episode in Section 3. The case-mix finding in Section 5 (identical 32.9% high-risk volume in outliers vs non-outliers) confirms the risk-adjustment is not the bottleneck.</p>
+  </div>
+  <div class="defense-card">
+    <h4>The team engages targets, not statewide averages</h4>
+    <p>The top-N selector in the controls panel reflects the team's operational reality: a 3–6 FTE team does not touch @@N_OUTLIERS@@ facility-episodes. It engages a focused set. The current setting (Top 20) captures @@TOP_20_PCT_INT@@% of the $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling — and that's where the model's savings live, scaled by the addressability and lever intensity.</p>
+  </div>
+  <div class="defense-card">
+    <h4>Non-overlap math</h4>
+    <p>Lever A and Lever C cannot both claim the same dollar. When volume migrates under Lever A on an elective episode, that volume leaves the outlier facility and is no longer available for Lever C engagement. The model multiplies Lever C savings by <i>(1 − migration_rate)</i> on elective episodes to prevent double-counting. On non-elective episodes (OB, emergent), Lever A does not apply.</p>
+  </div>
+</div>
+
+<div class="team-mapping">
+  <h4>How the Team Operates the Levers (From Proof to Program → This Model)</h4>
+  <p><b>Lever A — Referral Steering</b> is delivered by the <b>Stakeholder Engagement Lead</b> (RAE relationship + PCP communication) and the <b>Data &amp; Analytics Lead</b> (facility-level episode performance reports, refreshed quarterly).</p>
+  <p><b>Lever C — QI Engagement</b> is delivered by the <b>Implementation Coordinator</b> (90-day QI cycles at top-N targets) and the <b>Clinical Lead</b> (complication and post-procedural service definitions, peer-benchmark logic).</p>
+  <p><b>Target list ownership</b> — systemic outliers and top-N facility-episodes — sits with the Director, who holds the engagement decisions and the stakeholder relationships those decisions require.</p>
+</div>
+
+</div><!-- /.body -->
+
+<div class="doc-footer">
+  <span>From Populations to Episodes &nbsp;·&nbsp; Medicaid CFO Decision Tool &nbsp;·&nbsp; <b>APCD-Grounded Three-Variable Model</b></span>
+  <span>CO APCD · @@N_EPISODES@@ Procedural Episodes · @@N_OUTLIERS@@ Facility-Episodes at O:E &gt; @@OE_THRESHOLD@@ · @@GENERATED_DATE@@</span>
+</div>
+
+<script>
+'use strict';
+
+// ─── Episodes from Colorado APCD risk-adjusted cost output (measured outlier excess) ───
+const EPISODES = @@EPISODES_JSON@@;
+
+// ─── Systemic outlier facilities (outlier in N+ episodes) ───
+const SYSTEMIC = @@SYSTEMIC_JSON@@;
+
+// ─── Top facility-episode outlier concentrations ranked by outlier excess $ ───
+const TOP_OUTLIERS = @@TOP_OUTLIERS_JSON@@;
+
+// ─── Defaults & configuration ───
+const CLASS_DEFAULT_ADDR = { std: 0.70, het: 0.50 };
+const CLASS_LABEL = { std: "Standard", het: "Heterogeneous" };
+const CONCENTRATION_AT_N = @@CONCENTRATION_JSON@@;
+const TOTAL_OUTLIER_EXCESS = @@TOTAL_OUTLIER_EXCESS_NUM@@;
+const ALL_OUTLIER_COUNT = @@N_OUTLIERS@@;
+
+const PRESETS = {
+  floor:    { migA: 5,  dlA: 10, engC: 30, redC: 15, label: "Floor" },
+  balanced: { migA: 10, dlA: 10, engC: 50, redC: 20, label: "Balanced" },
+  stretch:  { migA: 15, dlA: 10, engC: 65, redC: 25, label: "Stretch" },
+};
+
+const state = {
+  episodes: EPISODES.map(e => ({
+    ...e,
+    addressablePct: CLASS_DEFAULT_ADDR[e.cls] * 100,
+    addressablePctOverride: false,
+  })),
+  levers: { ...PRESETS.balanced },
+  topN: 20,
+  goalTarget: 2000000,
+};
+
+// ─── Compute per episode ───
+function computeEpisode(ep, lev, concentration) {
+  // Addressable excess = measured outlier excess × addressable % × concentration capture
+  const baseAddressable = ep.outlier_excess * (ep.addressablePct / 100) * concentration;
+
+  // Lever A on elective episodes only
+  const electiveFactor = ep.elective ? 1 : 0;
+  const leverA_share = (lev.migA / 100) * (lev.dlA / 100) * electiveFactor;
+  // Lever A uses outlier_actual × concentration (spend at outlier facilities)
+  const leverA = ep.outlier_actual * concentration * leverA_share;
+
+  // Lever C operates on addressable, less migrated share on electives
+  const nonMigShare = 1 - (lev.migA / 100) * electiveFactor;
+  const leverC = baseAddressable * nonMigShare * (lev.engC / 100) * (lev.redC / 100);
+
+  return {
+    outlierExcess: ep.outlier_excess * concentration,
+    addressable: baseAddressable,
+    leverA,
+    leverC,
+    total: leverA + leverC,
+  };
+}
+
+function computeAll(levOverride, topNOverride) {
+  const lev = levOverride || state.levers;
+  const N = topNOverride || state.topN;
+  const concentration = CONCENTRATION_AT_N[N] || 1.0;
+
+  let aSum = 0, cSum = 0, excessSum = 0, addrSum = 0, spendSum = 0, volSum = 0, outliersSum = 0;
+  const rows = state.episodes.map(ep => {
+    const r = computeEpisode(ep, lev, concentration);
+    aSum += r.leverA;
+    cSum += r.leverC;
+    excessSum += r.outlierExcess;
+    addrSum += r.addressable;
+    spendSum += ep.actual;
+    volSum += ep.volume;
+    outliersSum += ep.n_outliers;
+    return { ep, r };
+  });
+  return { rows, totals: { aSum, cSum, excessSum, addrSum, spendSum, volSum, outliersSum, total: aSum + cSum, concentration } };
+}
+
+// ─── Formatters ───
+const fmt = {
+  dollar: v => v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : v >= 1e4 ? "$" + (v / 1e3).toFixed(0) + "K" : "$" + Math.round(v).toLocaleString(),
+  fullDollar: v => "$" + Math.round(v).toLocaleString(),
+  pct: v => v.toFixed(1) + "%",
+  num: v => Math.round(v).toLocaleString(),
+};
+
+// ─── Render: episode table ───
+function buildEpRows() {
+  const tbody = document.getElementById("epRows");
+  tbody.innerHTML = state.episodes.map((ep, i) => `
+    <tr data-idx="${i}">
+      <td class="episode-name">${ep.name}</td>
+      <td class="center">
+        <select data-field="cls">
+          <option value="std" ${ep.cls === "std" ? "selected" : ""}>Std</option>
+          <option value="het" ${ep.cls === "het" ? "selected" : ""}>Het</option>
+        </select>
+      </td>
+      <td class="center">
+        <input type="number" data-field="addressablePct" min="0" max="100" step="5" value="${ep.addressablePct}">
+      </td>
+      <td class="center">
+        <input type="checkbox" data-field="elective" ${ep.elective ? "checked" : ""} ${ep.electiveLocked ? "disabled" : ""}>
+      </td>
+      <td class="right">${fmt.fullDollar(ep.actual)}</td>
+      <td class="right">${fmt.num(ep.volume)}</td>
+      <td class="center">${ep.n_outliers} / ${ep.n_facilities}</td>
+      <td class="right" data-cell="excess"></td>
+      <td class="right" data-cell="addressable"></td>
+      <td class="right lever-a-col" data-cell="leverA"></td>
+      <td class="right lever-c-col" data-cell="leverC"></td>
+      <td class="right ep-total-col" data-cell="total"></td>
+    </tr>
+  `).join("");
+  tbody.querySelectorAll("tr").forEach((tr, i) => {
+    tr.querySelectorAll("[data-field]").forEach(input => {
+      input.addEventListener("input", () => {
+        const ep = state.episodes[i];
+        const field = input.dataset.field;
+        if (field === "cls") {
+          ep.cls = input.value;
+          if (!ep.addressablePctOverride) {
+            ep.addressablePct = CLASS_DEFAULT_ADDR[ep.cls] * 100;
+            tr.querySelector('[data-field="addressablePct"]').value = ep.addressablePct;
+          }
+        } else if (field === "addressablePct") {
+          ep.addressablePct = parseFloat(input.value) || 0;
+          ep.addressablePctOverride = true;
+        } else if (field === "elective") {
+          ep.elective = input.checked;
+        }
+        render();
+      });
+    });
+  });
+}
+
+// ─── Render: systemic facilities ───
+function buildSystemic() {
+  const tbody = document.getElementById("systemicRows");
+  tbody.innerHTML = SYSTEMIC.map(s => {
+    const persistLevel = s.outlier_eps >= 5 ? "persist-high" : s.outlier_eps >= 4 ? "persist-med" : "";
+    const ratioCls = s.outlier_eps / s.total_eps >= 0.6 ? "persist-high" : s.outlier_eps / s.total_eps >= 0.4 ? "persist-med" : "";
+    return `
+    <tr>
+      <td><b>${s.fac}</b></td>
+      <td style="font-size:7.5pt; color:var(--muted);">${s.sys}</td>
+      <td class="center ${persistLevel}">${s.outlier_eps}</td>
+      <td class="center ${ratioCls}">${s.total_eps} <span style="font-size:7pt;color:var(--muted);">(${Math.round(100*s.outlier_eps/s.total_eps)}%)</span></td>
+      <td class="right" style="font-weight:700;">${fmt.fullDollar(s.excess)}</td>
+      <td>${s.episodes.map(e => `<span class="ep-tag">${e}</span>`).join("")}</td>
+    </tr>
+  `;
+  }).join("");
+}
+
+// ─── Render: concentration table (top-N from current state) ───
+function buildConcentration() {
+  const tbody = document.getElementById("concRows");
+  const N = state.topN;
+  let cumulative = 0;
+  // Show top 30 always; highlight first N as "in scope"
+  const shown = TOP_OUTLIERS.slice(0, 30);
+  // For cumulative %, use the running sum / TOTAL_OUTLIER_EXCESS
+  tbody.innerHTML = shown.map((o, i) => {
+    cumulative += o.excess;
+    const inScope = (i + 1) <= N;
+    return `
+      <tr class="${inScope ? 'in-scope' : ''}">
+        <td>${i + 1}</td>
+        <td>${o.fac}</td>
+        <td>${o.ep}</td>
+        <td class="right">${o.oe.toFixed(2)}</td>
+        <td class="right">${fmt.fullDollar(o.excess)}</td>
+        <td class="right">${(100 * cumulative / TOTAL_OUTLIER_EXCESS).toFixed(1)}%</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+// ─── Render: top-level outputs + goal panel ───
+function render() {
+  const { rows, totals } = computeAll();
+
+  rows.forEach(({ ep, r }, i) => {
+    const tr = document.querySelector(`#epRows tr[data-idx="${i}"]`);
+    tr.querySelector('[data-cell="excess"]').textContent = fmt.fullDollar(r.outlierExcess);
+    tr.querySelector('[data-cell="addressable"]').textContent = fmt.fullDollar(r.addressable);
+    tr.querySelector('[data-cell="leverA"]').textContent = r.leverA > 1 ? fmt.fullDollar(r.leverA) : "—";
+    tr.querySelector('[data-cell="leverC"]').textContent = r.leverC > 1 ? fmt.fullDollar(r.leverC) : "—";
+    tr.querySelector('[data-cell="total"]').textContent = fmt.fullDollar(r.total);
+  });
+
+  document.getElementById("ttSpend").textContent = fmt.fullDollar(totals.spendSum);
+  document.getElementById("ttVol").textContent = fmt.num(totals.volSum);
+  document.getElementById("ttOutliers").textContent = totals.outliersSum + " / " + state.episodes.reduce((s,e)=>s+e.n_facilities,0);
+  document.getElementById("ttExcess").textContent = fmt.fullDollar(totals.excessSum);
+  document.getElementById("ttAddr").textContent = fmt.fullDollar(totals.addrSum);
+  document.getElementById("ttA").textContent = fmt.fullDollar(totals.aSum);
+  document.getElementById("ttC").textContent = fmt.fullDollar(totals.cSum);
+  document.getElementById("ttTotal").textContent = fmt.fullDollar(totals.total);
+
+  document.getElementById("totalVal").textContent = fmt.fullDollar(totals.total);
+  document.getElementById("aVal").textContent = fmt.fullDollar(totals.aSum);
+  document.getElementById("cVal").textContent = fmt.fullDollar(totals.cSum);
+  document.getElementById("totalSub").textContent =
+    `Top ${state.topN === ALL_OUTLIER_COUNT ? 'All ' + ALL_OUTLIER_COUNT : state.topN} facility-episodes engaged · ` +
+    `${(totals.concentration * 100).toFixed(1)}% of $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling in scope · ` +
+    `${fmt.pct(totals.total / totals.spendSum * 100)} of $419M total spend`;
+  document.getElementById("aSub").textContent =
+    `${fmt.pct(state.levers.migA)} migration × ${fmt.pct(state.levers.dlA)} cost delta`;
+  document.getElementById("cSub").textContent =
+    `${fmt.pct(state.levers.engC)} engagement × ${fmt.pct(state.levers.redC)} reduction`;
+
+  // Progress bar — total vs $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling
+  const ceilingPct = 100 * totals.total / TOTAL_OUTLIER_EXCESS;
+  document.getElementById("progressFill").style.width = Math.min(100, ceilingPct).toFixed(1) + "%";
+  document.getElementById("progressText").textContent =
+    `${fmt.fullDollar(totals.total)} of $@@TOTAL_OUTLIER_EXCESS_M@@M (${ceilingPct.toFixed(1)}%)`;
+  // Goal marker
+  const goalPct = 100 * state.goalTarget / TOTAL_OUTLIER_EXCESS;
+  document.getElementById("goalMarker").style.left = Math.min(99, goalPct).toFixed(1) + "%";
+  document.getElementById("goalLabel").textContent = `target ${fmt.dollar(state.goalTarget)}`;
+
+  // Active preset detection
+  document.querySelectorAll(".preset-btn[data-preset]").forEach(btn => {
+    const p = PRESETS[btn.dataset.preset];
+    const match = p && p.migA === state.levers.migA && p.dlA === state.levers.dlA &&
+                  p.engC === state.levers.engC && p.redC === state.levers.redC;
+    btn.classList.toggle("active", !!match);
+  });
+
+  // Concentration table (re-render for top-N highlight)
+  buildConcentration();
+
+  // Goal panel
+  const total = totals.total;
+  const goalMet = total >= state.goalTarget;
+  const ceilingShare = (100 * total / TOTAL_OUTLIER_EXCESS).toFixed(1);
+  const addrShare = (100 * total / 9974109).toFixed(1);
+  const goalDelta = total - state.goalTarget;
+  const goalRow = goalMet
+    ? `<b>exceeds</b> the CFO's $${(state.goalTarget/1e6).toFixed(1)}M target by <b>${fmt.fullDollar(Math.abs(goalDelta))}</b>`
+    : `falls <b>${fmt.fullDollar(Math.abs(goalDelta))}</b> short of the $${(state.goalTarget/1e6).toFixed(1)}M target`;
+
+  document.getElementById("goalStatement").innerHTML =
+    `By engaging the <b>top ${state.topN === ALL_OUTLIER_COUNT ? ALL_OUTLIER_COUNT + ' (all)' : state.topN}</b> facility-episode combinations through ` +
+    `<b>${fmt.pct(state.levers.migA)} RAE/PCP referral steering</b> on elective episodes and ` +
+    `<b>${fmt.pct(state.levers.engC)} QI engagement</b> achieving <b>${fmt.pct(state.levers.redC)} reduction</b> in addressable excess, ` +
+    `the State recovers <b>${fmt.fullDollar(total)}</b> annually — <b>${ceilingShare}%</b> of the measured $@@TOTAL_OUTLIER_EXCESS_M@@M ceiling, ` +
+    `<b>${addrShare}%</b> of the $@@TOTAL_ADDRESSABLE_M_PRECISE@@M addressable share. ` +
+    `This ${goalRow}. No rate cuts. No withholds. No new authority required.`;
+
+  document.getElementById("gcCeiling").textContent = ceilingShare + "%";
+  document.getElementById("gcCeilingSub").textContent = `${fmt.fullDollar(total)} of $@@TOTAL_OUTLIER_EXCESS_M@@M`;
+  document.getElementById("gcAddr").textContent = addrShare + "%";
+  document.getElementById("gcAddrSub").textContent = `${fmt.fullDollar(total)} of $@@TOTAL_ADDRESSABLE_M_PRECISE@@M addressable`;
+  document.getElementById("gcCum").textContent = fmt.fullDollar(total * 2);
+
+  // Print snapshot
+  document.getElementById("controlsPrint").innerHTML =
+    `<b>Scenario snapshot:</b> Top-N <b>${state.topN === ALL_OUTLIER_COUNT ? 'All' : state.topN}</b> &nbsp;·&nbsp; ` +
+    `Lever A <b>${fmt.pct(state.levers.migA)} × ${fmt.pct(state.levers.dlA)}</b> &nbsp;·&nbsp; ` +
+    `Lever C <b>${fmt.pct(state.levers.engC)} × ${fmt.pct(state.levers.redC)}</b> &nbsp;·&nbsp; ` +
+    `CFO target <b>${fmt.fullDollar(state.goalTarget)}</b>`;
+}
+
+// ─── Wire controls ───
+function wireControls() {
+  ["migA", "dlA", "engC", "redC"].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("input", () => {
+      state.levers[id] = parseFloat(el.value) || 0;
+      render();
+    });
+  });
+  document.getElementById("topN").addEventListener("change", (e) => {
+    state.topN = parseInt(e.target.value, 10);
+    render();
+  });
+  document.getElementById("goalTarget").addEventListener("input", (e) => {
+    state.goalTarget = parseFloat(e.target.value) || 0;
+    render();
+  });
+  document.querySelectorAll(".preset-btn[data-preset]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const p = PRESETS[btn.dataset.preset];
+      state.levers = { ...p };
+      ["migA", "dlA", "engC", "redC"].forEach(id => {
+        document.getElementById(id).value = state.levers[id];
+      });
+      render();
+    });
+  });
+  document.getElementById("reset").addEventListener("click", () => {
+    state.levers = { ...PRESETS.balanced };
+    state.topN = 20;
+    state.goalTarget = 2000000;
+    state.episodes.forEach((ep, i) => {
+      const src = EPISODES[i];
+      ep.cls = src.cls;
+      ep.addressablePct = CLASS_DEFAULT_ADDR[ep.cls] * 100;
+      ep.addressablePctOverride = false;
+      ep.elective = src.elective;
+    });
+    ["migA", "dlA", "engC", "redC"].forEach(id => {
+      document.getElementById(id).value = state.levers[id];
+    });
+    document.getElementById("topN").value = "20";
+    document.getElementById("goalTarget").value = state.goalTarget;
+    buildEpRows();
+    render();
+  });
+}
+
+buildEpRows();
+buildSystemic();
+wireControls();
+render();
+</script>
+
+</body>
+</html>

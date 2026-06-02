@@ -1,28 +1,36 @@
-# PACES CFO Workbook Generator
+# PACES CFO Workbook & Decision Tool Generator
 
-Standalone Python tool that converts a Colorado APCD facility-episode risk-adjusted cost CSV into a 10-worksheet Excel workbook organized for HCPF / CFO decision-making.
+Two standalone Python tools that convert a Colorado APCD facility-episode risk-adjusted cost CSV into:
 
-Built for the **EOCS · KPMG Colorado Medicaid engagement** so the analytical workbook can be regenerated on every data refresh without manual recreation.
+1. **A 10-worksheet Excel workbook** organized for HCPF / CFO analytical review (`build_cfo_workbook.py`)
+2. **An interactive CFO Decision Tool HTML page** for HCPF Finance leadership (`build_cfo_html.py`)
+
+Both share the same analytics module (`paces_analytics.py`) and the same input CSV format, so a single data refresh produces both deliverables.
+
+Built for the **EOCS · KPMG Colorado Medicaid engagement**.
 
 ---
 
 ## Quick start
 
 ```bash
-# Install the one dependency (one-time setup)
-pip install openpyxl
+# One-time setup
+pip install -r requirements.txt
 
-# Run against any APCD CSV that matches the input spec
+# Generate the 10-sheet Excel workbook
 python build_cfo_workbook.py "Your_APCD_Data.csv"
+
+# Generate the interactive CFO Decision Tool HTML
+python build_cfo_html.py "Your_APCD_Data.csv"
 ```
 
-Output: a `.xlsx` file beside the input with the suffix `_workbook.xlsx`.
+Outputs land beside the input file by default. Both scripts accept `--output` to redirect.
 
 ---
 
 ## What gets generated
 
-Ten worksheets, each filtered to its analytical purpose with a banner at the top stating exactly what filter is applied:
+### `build_cfo_workbook.py` — Excel workbook (10 worksheets)
 
 | # | Sheet | Filter |
 |---|---|---|
@@ -37,10 +45,19 @@ Ten worksheets, each filtered to its analytical purpose with a banner at the top
 | 9 | **By DOI Urbanity** | Outlier rollup by facility urbanity |
 | 10 | **By Hospital System** | Outlier rollup by system affiliation |
 
-Color highlighting:
-- **Red** rows / cells — outlier or systemic-outlier indicators
-- **Yellow** — low-volume data quality flag
-- **Green** — high-priority engagement target (top-10, RAE > 30% concentration, top-5 systems by cumulative %)
+### `build_cfo_html.py` — Interactive HTML Decision Tool
+
+A single self-contained `.html` file that opens in any modern browser. Sections:
+
+1. **Three Variables That Drive the Number** — Standard vs Heterogeneous classification, facility outlier persistence, top-N concentration
+2. **The Levers** — Informed Referral Steering (RAE + PCP) and Outlier-Targeted QI Engagement
+3. **The Calculator** — Per-episode editable inputs, lever intensity sliders, top-N selector, live recompute, sensitivity grid
+4. **Where the Team Engages** — Systemic outlier facilities table + top-30 concentration table
+5. **Where the Excess Lives** — RAE Region / DOI Urbanity / Hospital System concentration tables + case-mix defensibility note
+6. **The CFO's Defensible Goal** — Live progress bar vs $25M ceiling, model-grounded savings range, suggested Year-2 target
+7. **Defensibility & Team Function** — Why the methodology holds up
+
+The HTML is fully self-contained (CSS and JavaScript inlined) — no external server required, no JavaScript libraries, no installation. Open the file in Chrome, Edge, Safari, or Firefox.
 
 ---
 
@@ -48,22 +65,28 @@ Color highlighting:
 
 | File | Purpose | Edit it? |
 |---|---|---|
-| `build_cfo_workbook.py` | The script | No — unless you want to change worksheet structure |
-| `config.json` | Episode classifications, RAE descriptors, thresholds | **Yes** — add new episodes here as they appear in future data cycles |
+| `paces_analytics.py` | Shared computation module — imported by both generators | No — unless adding new analytics |
+| `build_cfo_workbook.py` | Excel workbook generator | No — modify worksheets if needed |
+| `build_cfo_html.py` | HTML Decision Tool generator | No — modify HTML output if needed |
+| `templates/cfo_decision_tool.html` | HTML template with `@@MARKER@@` placeholders | Yes — to change visual layout / copy |
+| `config.json` | Episode classifications, RAE descriptors, thresholds | **Yes** — add new episodes here |
 | `INPUT_SPECIFICATION.md` | Required and optional input columns; data quality rules | Reference only |
+| `requirements.txt` | Python dependencies | Reference only |
+| `LICENSE` | MIT | Reference only |
 | `README.md` | This file | Reference only |
 
 ---
 
 ## When KPMG runs a new data cycle
 
-1. Confirm the CSV headers match `INPUT_SPECIFICATION.md`. The script will exit with a clear error if any required column is missing.
-2. If new episodes have been added to the PACES grouper, edit `config.json` and add them under `episode_classifications` with `"Standard"` or `"Heterogeneous"` as the value. The script will warn at runtime if any unclassified episode is found and will default it to Heterogeneous.
-3. Run:
+1. Confirm the CSV headers match `INPUT_SPECIFICATION.md`. Both scripts exit with a clear error if any required column is missing.
+2. If new episodes have been added to the PACES grouper, edit `config.json` and add them under `episode_classifications` with `"Standard"` or `"Heterogeneous"` as the value. Both scripts warn at runtime if any unclassified episode is found and default it to Heterogeneous.
+3. Run both generators:
    ```bash
-   python build_cfo_workbook.py "Q3_2026_data.csv" --output "Q3_2026_workbook.xlsx"
+   python build_cfo_workbook.py "Q3_2026_data.csv"
+   python build_cfo_html.py "Q3_2026_data.csv"
    ```
-4. Open the resulting workbook. The README sheet shows the headline totals at the bottom; verify they're consistent with prior cycles (or expected refresh deltas).
+4. Open the resulting workbook and HTML. Verify the README sheet's headline totals are consistent with expected refresh deltas.
 
 ---
 
@@ -80,19 +103,36 @@ Defaults in `config.json`:
 }
 ```
 
-Override at runtime without editing config:
+Override at runtime without editing the config:
 
 ```bash
 python build_cfo_workbook.py data.csv --min-volume 10 --oe-threshold 1.05
+python build_cfo_html.py data.csv --min-volume 10 --oe-threshold 1.05
 ```
 
 The CLI overrides take precedence over `config.json` values.
 
 ---
 
+## Modifying the HTML output
+
+If KPMG wants to adjust the visual layout, copy changes, or styling of the Decision Tool HTML:
+
+1. Open `templates/cfo_decision_tool.html` in any editor
+2. Markers in the template use the format `@@MARKER_NAME@@` — these are substituted at generation time
+3. The full list of available markers and what they contain is documented inline in `build_cfo_html.py` (search for `build_substitutions`)
+4. CSS and JavaScript inside the template can be edited freely; they don't use markers
+
+Common modifications:
+- Color scheme: edit the `:root` CSS variables at the top of the template
+- Section ordering: rearrange the section blocks; the `@@SECTION_5_CONTENT@@` marker generates the entire Where-the-Excess-Lives block from Python
+- Default goal target: edit the `state.goalTarget` value in the embedded JavaScript
+
+---
+
 ## Methodology notes
 
-The script implements **Frank's face-validity framework** for distinguishing addressable from definitional outlier excess:
+Both generators implement **Frank's face-validity framework** for distinguishing addressable from definitional outlier excess:
 
 - **Standard episodes** (tight procedure list, diagnosis not the driver): outliers reflect real performance gaps — 70% addressable
 - **Heterogeneous episodes** (bundled procedures or diagnoses): part of the variance reflects case-mix or definitional issues — 50% addressable
@@ -104,11 +144,13 @@ Default addressability percentages are configurable in `config.json` if BPCI Adv
 ## Dependencies
 
 - **Python 3.9 or newer**
-- **openpyxl ≥ 3.0** (`pip install openpyxl`)
-- No other dependencies. All other parsing uses the Python standard library.
+- **openpyxl ≥ 3.0** (`pip install openpyxl`) — only required for `build_cfo_workbook.py`
+- **No dependencies** beyond stdlib for `build_cfo_html.py`
+
+`requirements.txt` includes openpyxl for the workbook generator. If you only need the HTML generator, no install step is needed beyond Python itself.
 
 ---
 
 ## Support
 
-This tool is a one-time deliverable from the EOCS engagement. If KPMG needs to adapt it (additional worksheets, different filters, new data sources), the script is well-commented and modular — each worksheet is built by its own `build_*` function that can be modified independently.
+These tools are deliverables from the EOCS engagement. The codebase is well-commented and modular — each generator imports from `paces_analytics.py`, so adding new dimensions or modifying calculations happens in one place and both deliverables update automatically.
