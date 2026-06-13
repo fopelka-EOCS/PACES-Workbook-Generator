@@ -26,6 +26,12 @@ python build_cfo_html.py "Your_APCD_Data.csv"
 
 Outputs land beside the input file by default. Both scripts accept `--output` to redirect.
 
+**New here?** Smoke-test on the bundled synthetic sample first — fake data, no PHI:
+
+```bash
+python build_cfo_workbook.py sample_data.csv
+python build_cfo_html.py sample_data.csv
+```
 ---
 
 ## What gets generated
@@ -74,6 +80,19 @@ The HTML is fully self-contained (CSS and JavaScript inlined) — no external se
 | `requirements.txt` | Python dependencies | Reference only |
 | `LICENSE` | MIT | Reference only |
 | `README.md` | This file | Reference only |
+| `sample_data.csv` | Synthetic sample input (fake data) to smoke-test both generators | Reference / test |
+| `generate_sample.py` | Regenerates `sample_data.csv` | Reference only |
+| `docs/transfer/` | Code-transfer packages (Word docs) that carry each script across a firewall as text | Reference only |
+---
+
+## Moving the tools into a restricted / firewalled environment
+
+Where executable files (`.py`) can't be moved across a security boundary, each
+script is also provided as a **code-transfer package** — a Word document that
+carries the script as text and reconstructs it byte-for-byte inside the boundary,
+verified by a SHA-256 hash. See [`docs/transfer/`](docs/transfer/) and its
+[README](docs/transfer/README.md) for the packages, usage, and hashes. The HTML
+template, `config.json`, and the CSV are plain text and can be moved directly.
 
 ---
 
